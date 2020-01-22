@@ -29,8 +29,8 @@ def transform_words(beginning_word, end_word):
   if len(beginning_word) != len(end_word):
     return None
   else:
-  # get union of both words, from which we'll use to determione valid words
-    valid_letters = set(beginning_word) | set(end_word)
+  # get union of both words, from which we'll use to determine valid words
+    #valid_letters = set(beginning_word) | set(end_word)
   # open file and make set of all words of same length
     text_file = open('words.txt')
     valid_words = [word.lower() for word in text_file.read().split() if len(word) == len(beginning_word)]
