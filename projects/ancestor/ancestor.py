@@ -1,19 +1,39 @@
 from graph import Graph
-from typing import List, Tuple
-from util import Stack
+#from typing import List, Tuple
+from util import Queue
 
-def earliest_ancestor(ancestors: List[Tuple[int, int]], starting_node: int) -> int:
+
+def earliest_ancestor(ancestors, starting_node):
     graph = Graph()
     for item in ancestors:
         graph.add_vertex(item[1])
         graph.add_vertex(item[0])
     for item in ancestors:
         graph.add_edge(item[1], item[0])
-    earliest_ancestor = -1
-    longest_path = []
     
+    longest_path = 1
+    earliest_ancestor = -1
+    
+    queue: Queue = Queue()
+    queue.enqueue([starting_node])
+    
+    while queue.size() > 0:
+        path = queue.dequeue()
+        vertex = path[-1]
 
+        for ancestor in graph.vertices[vertex]:
+            path_copy = list(path)
+            path_copy.append(ancestor)
+            queue.enqueue(path_copy) # Enqueue the new path that includes ancestor
 
+        if (len(path) == longest_path and vertex < earliest_ancestor):
+            earliest_ancestor = vertex
+            longest_path = len(path)
+        if len(path) > longest_path:
+            earliest_ancestor = vertex
+            longest_path = len(path)
+
+    return earliest_ancestor
 
 if __name__ == '__main__':
     test_ancestors = [(1, 3), (2, 3), (3, 6), (5, 6), (5, 7), (4, 5), (4, 8), (8, 9), (11, 8), (10, 1)]
