@@ -1,3 +1,7 @@
+import random
+import math
+from itertools import combinations
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -42,11 +46,21 @@ class SocialGraph:
         self.last_id = 0
         self.users = {}
         self.friendships = {}
-        # !!!! IMPLEMENT ME
 
-        # Add users
+        # Generate users
+        for x in range(num_users):
+            self.add_user(f"user{x}")
 
-        # Create friendships
+        # target_sum == avg_friendships * num_users
+        
+        # Determine all possible combos. For 10 people, there should be 45.
+        all_combos = list(combinations(range(1, num_users + 1), 2)) 
+        # combinations(n, r)
+        # range(num_users) didn't work because user ID starts at 1 - I was getting Key Error by trying to pair up user 0!
+        random.shuffle(all_combos)
+        friend_queue = all_combos[:num_users]
+        for friendship in friend_queue:
+            self.add_friendship(friendship[0], friendship[1])
 
     def get_all_social_paths(self, user_id):
         """
@@ -58,7 +72,7 @@ class SocialGraph:
         The key is the friend's ID and the value is the path.
         """
         visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
+        # 
         return visited
 
 
@@ -66,5 +80,5 @@ if __name__ == '__main__':
     sg = SocialGraph()
     sg.populate_graph(10, 2)
     print(sg.friendships)
-    connections = sg.get_all_social_paths(1)
-    print(connections)
+    #connections = sg.get_all_social_paths(1)
+    #print(connections)
